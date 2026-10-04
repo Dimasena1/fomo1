@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   1. RAW DESIGN TOKENS  (mirror of tokens/tokens.json)
+   Change a value here and every component on web updates.
+   ===================================================================== */
+:root {
+  --ds-color-bg: #060510;
+  --ds-color-surface: #0f0d1f;
+  --ds-color-surface-2: #1a1730;
+  --ds-color-border: rgba(255, 255, 255, 0.08);
+  --ds-color-text: #f4f2ff;
+  --ds-color-text-muted: #8e8aa8;
+  --ds-color-accent: #8b5cf6;          /* text, outlines, glow */
+  --ds-color-accent-strong: #7c4def;   /* filled buttons: white on it is 5:1 */
+  --ds-color-accent-soft: rgba(139, 92, 246, 0.15);
+  --ds-color-win: #22c55e;
+  --ds-color-loss: #ef4444;
+
+  --ds-radius-sm: 8px;
+  --ds-radius-md: 12px;
+  --ds-radius-lg: 16px;
+  --ds-radius-xl: 24px;
+
+  --ds-shadow-glow: 0 0 48px rgba(139, 92, 246, 0.35);
+  --ds-shadow-glow-sm: 0 0 24px rgba(139, 92, 246, 0.25);
+
+  --ds-ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+/* =====================================================================
+   2. TAILWIND THEME  (turns tokens into utilities: bg-background,
+   text-muted-foreground, bg-primary, text-win, rounded-lg, shadow-glow…)
+   ===================================================================== */
+@theme inline {
+  --color-background: var(--ds-color-bg);
+  --color-foreground: var(--ds-color-text);
+  --color-card: var(--ds-color-surface);
+  --color-card-2: var(--ds-color-surface-2);
+  --color-border: var(--ds-color-border);
+  --color-muted-foreground: var(--ds-color-text-muted);
+  --color-primary: var(--ds-color-accent);
+  --color-primary-strong: var(--ds-color-accent-strong);
+  --color-primary-soft: var(--ds-color-accent-soft);
+  --color-win: var(--ds-color-win);
+  --color-loss: var(--ds-color-loss);
+
+  --radius-sm: var(--ds-radius-sm);
+  --radius-md: var(--ds-radius-md);
+  --radius-lg: var(--ds-radius-lg);
+  --radius-xl: var(--ds-radius-xl);
+
+  --shadow-glow: var(--ds-shadow-glow);
+  --shadow-glow-sm: var(--ds-shadow-glow-sm);
+
+  --font-sans: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: var(--ds-ease);
+
+  --animate-orbit: orbit calc(var(--duration) * 1s) linear infinite;
+  --animate-marquee: marquee var(--duration) linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes orbit {
+    0% {
+      transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px))
+        rotate(calc(var(--angle) * -1deg));
+    }
+    100% {
+      transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px))
+        rotate(calc((var(--angle) * -1deg) - 360deg));
+    }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* =====================================================================
+   3. BASE STYLES
+   ===================================================================== */
+@layer base {
+  * {
+    border-color: var(--ds-color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--ds-color-bg);
+    color: var(--ds-color-text);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    letter-spacing: -0.02em;
+  }
+  input[type="range"] {
+    accent-color: var(--ds-color-accent);
+  }
+  ::selection {
+    background: var(--ds-color-accent);
+    color: white;
+  }
+}
+
+/* =====================================================================
+   4. SYSTEM UTILITIES
+   ===================================================================== */
+
+/* Big lowercase display headline, like "where traders become legends." */
+@utility display {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+/* Section heading */
+@utility heading {
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+/* ALL-CAPS tiny label, like "LEADERBOARD" above a feature caption */
+@utility label-caps {
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Deep-space backdrop: radial violet glow + faint stars */
+@utility bg-space {
+  background-color: var(--ds-color-bg);
+  background-image:
+    radial-gradient(ellipse 60% 50% at 50% -10%, rgba(139, 92, 246, 0.28), transparent 70%),
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.35) 50%, transparent 51%),
+    radial-gradient(1px 1px at 70% 20%, rgba(255, 255, 255, 0.3) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 85% 65%, rgba(255, 255, 255, 0.25) 50%, transparent 51%),
+    radial-gradient(1px 1px at 35% 80%, rgba(255, 255, 255, 0.25) 50%, transparent 51%),
+    radial-gradient(1px 1px at 55% 55%, rgba(255, 255, 255, 0.2) 50%, transparent 51%);
+}

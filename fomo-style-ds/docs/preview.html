@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#060510" />
+<title>fomo-style design system — preview</title>
+<style>
+  /* ===== tokens (mirror of tokens/tokens.json) ===== */
+  :root {
+    --ds-color-bg: #060510;
+    --ds-color-surface: #0f0d1f;
+    --ds-color-surface-2: #1a1730;
+    --ds-color-border: rgba(255,255,255,0.08);
+    --ds-color-text: #f4f2ff;
+    --ds-color-text-muted: #8e8aa8;
+    --ds-color-accent: #8b5cf6;
+    --ds-color-accent-strong: #7c4def;
+    --ds-color-accent-soft: rgba(139,92,246,0.15);
+    --ds-color-win: #22c55e;
+    --ds-color-loss: #ef4444;
+    --ds-radius-sm: 8px; --ds-radius-md: 12px; --ds-radius-lg: 16px; --ds-radius-xl: 24px;
+    --ds-shadow-glow: 0 0 48px rgba(139,92,246,0.35);
+    --ds-shadow-glow-sm: 0 0 24px rgba(139,92,246,0.25);
+    --ds-ease: cubic-bezier(.16,1,.3,1);
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; border-color: var(--ds-color-border); }
+  html, body { margin: 0; }
+  body {
+    font-family: Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+    background: var(--ds-color-bg);
+    color: var(--ds-color-text);
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(139,92,246,.28), transparent 70%),
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 70% 20%, rgba(255,255,255,.3) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 85% 65%, rgba(255,255,255,.25) 50%, transparent 51%),
+      radial-gradient(1px 1px at 35% 80%, rgba(255,255,255,.25) 50%, transparent 51%);
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 48px 24px 96px; }
+  .display { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.02; letter-spacing: -.03em; font-weight: 600; text-transform: lowercase; margin: 0; }
+  .heading { font-size: clamp(1.75rem, 3.2vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em; font-weight: 600; text-transform: lowercase; margin: 0; }
+  .label { font-size: 11px; line-height: 1; letter-spacing: .08em; font-weight: 600; text-transform: uppercase; color: var(--ds-color-text-muted); }
+  .muted { color: var(--ds-color-text-muted); }
+  .section { margin-top: 64px; }
+  .section > .label { margin-bottom: 16px; display: block; }
+  .grid { display: grid; gap: 16px; }
+  .cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cols-4 { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 760px) { .cols-2, .cols-3, .cols-4 { grid-template-columns: 1fr 1fr; } }
+
+  /* swatches */
+  .swatch { border: 1px solid var(--ds-color-border); border-radius: var(--ds-radius-lg); overflow: hidden; background: var(--ds-color-surface); }
+  .swatch .chip { height: 72px; }
+  .swatch .meta { padding: 12px 14px; font-size: 12px; }
+  .swatch .meta b { display: block; font-weight: 600; margin-bottom: 2px; }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 24px; border-radius: 9999px; font: inherit; font-weight: 600; font-size: 16px; border: 1px solid transparent; cursor: pointer; transition: all .2s var(--ds-ease); color: var(--ds-color-text); background: transparent; }
+  .btn-primary { background: var(--ds-color-accent-strong); color: #fff; box-shadow: var(--ds-shadow-glow-sm); }
+  .btn-primary:hover { background: var(--ds-color-accent); box-shadow: var(--ds-shadow-glow); }
+  .btn-ghost { border-color: var(--ds-color-border); }
+  .btn-ghost:hover { background: var(--ds-color-surface-2); }
+  .btn-secondary { background: var(--ds-color-surface-2); }
+  .btn-sm { height: 36px; padding: 0 16px; font-size: 14px; }
+  .btn-lg { height: 56px; padding: 0 32px; font-size: 18px; }
+
+  /* badge */
+  .badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 9999px; padding: 5px 10px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; line-height: 1; background: var(--ds-color-surface-2); color: var(--ds-color-text-muted); }
+  .badge-accent { background: var(--ds-color-accent-soft); color: var(--ds-color-accent); }
+  .badge-win { background: rgba(34,197,94,.15); color: var(--ds-color-win); }
+  .badge-loss { background: rgba(239,68,68,.15); color: var(--ds-color-loss); }
+  .badge-outline { background: transparent; border: 1px solid var(--ds-color-border); color: var(--ds-color-text); }
+
+  /* card */
+  .card { background: var(--ds-color-surface); border: 1px solid var(--ds-color-border); border-radius: var(--ds-radius-lg); }
+  .card-body { padding: 24px; }
+  .card-title { font-size: 18px; font-weight: 600; letter-spacing: -.02em; text-transform: lowercase; margin: 0 0 4px; }
+  .input { width: 100%; height: 48px; border-radius: var(--ds-radius-md); border: 1px solid var(--ds-color-border); background: var(--ds-color-surface-2); color: var(--ds-color-text); padding: 0 16px; font: inherit; }
+  .input:focus { outline: none; border-color: var(--ds-color-accent); box-shadow: 0 0 0 2px rgba(139,92,246,.4); }
+  input[type=range] { width: 100%; accent-color: var(--ds-color-accent); }
+
+  /* feature card */
+  .feature { display: flex; flex-direction: column; gap: 16px; height: 100%; }
+  .feature .caption { font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -.02em; text-transform: lowercase; margin: 0; }
+  .feature .frame { margin-top: auto; aspect-ratio: 4/3; border-radius: var(--ds-radius-md); border: 1px solid var(--ds-color-border); background: linear-gradient(135deg, var(--ds-color-surface-2), var(--ds-color-surface)); display: flex; align-items: center; justify-content: center; color: var(--ds-color-accent); font-size: 40px; }
+
+  /* bet slip */
+  .presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .preset { height: 40px; border-radius: 9999px; border: 1px solid var(--ds-color-border); background: transparent; color: var(--ds-color-text-muted); font: inherit; font-weight: 600; font-size: 14px; cursor: pointer; }
+  .preset.active { border-color: var(--ds-color-accent); background: var(--ds-color-accent-soft); color: var(--ds-color-accent); }
+  .payout { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--ds-color-border); padding-top: 16px; }
+  .payout b { font-size: 24px; font-weight: 600; color: var(--ds-color-win); font-variant-numeric: tabular-nums; }
+
+  /* feed */
+  .row { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--ds-color-border); }
+  .row:last-child { border-bottom: 0; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--ds-color-border); background: var(--ds-color-surface-2); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--ds-color-text-muted); flex-shrink: 0; }
+  .row .text { flex: 1; min-width: 0; font-size: 14px; }
+  .row .text small { display: block; font-size: 12px; color: var(--ds-color-text-muted); margin-top: 2px; }
+
+  /* stat tile */
+  .stat { display: flex; flex-direction: column; gap: 12px; padding: 20px; }
+  .stat .value { font-size: 30px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .stat .delta { font-size: 14px; font-weight: 500; }
+  .win { color: var(--ds-color-win); } .loss { color: var(--ds-color-loss); }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; padding: 12px 20px; border-bottom: 1px solid var(--ds-color-border); }
+  td { padding: 12px 20px; border-bottom: 1px solid var(--ds-color-border); }
+  tr:last-child td { border-bottom: 0; }
+  tr:hover td { background: var(--ds-color-surface-2); }
+  .right { text-align: right; }
+  .accent { color: var(--ds-color-accent); }
+
+  /* hero orbit */
+  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 860px) { .hero { grid-template-columns: 1fr; } }
+  .orbit-wrap { position: relative; height: 380px; display: flex; align-items: center; justify-content: center; }
+  .orbit-glow { position: absolute; width: 180px; height: 180px; border-radius: 50%; background: rgba(139,92,246,.3); filter: blur(48px); }
+  .core { position: relative; z-index: 1; width: 80px; height: 80px; border-radius: 50%; background: var(--ds-color-accent); box-shadow: var(--ds-shadow-glow); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .ring { position: absolute; border-radius: 50%; border: 1px dashed var(--ds-color-border); }
+  .orbit { position: absolute; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: orbit calc(var(--duration) * 1s) linear infinite; }
+  .orbit.reverse { animation-direction: reverse; }
+  .orbit span { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--ds-color-border); background: var(--ds-color-surface); box-shadow: var(--ds-shadow-glow-sm); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  @keyframes orbit {
+    0%   { transform: rotate(calc(var(--angle) * 1deg)) translateY(calc(var(--radius) * 1px)) rotate(calc(var(--angle) * -1deg)); }
+    100% { transform: rotate(calc(var(--angle) * 1deg + 360deg)) translateY(calc(var(--radius) * 1px)) rotate(calc((var(--angle) * -1deg) - 360deg)); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <span class="badge badge-accent">social-first betting</span>
+      <h1 class="display" style="margin-top:24px">where bettors become legends.</h1>
+      <p class="muted" style="font-size:18px;max-width:440px;margin:24px 0 32px">follow the best, copy their bets, climb the leaderboard. sports and prediction markets in one app — on web and mobile.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-lg">start betting →</button>
+        <button class="btn btn-ghost btn-lg">⤓ download app</button>
+      </div>
+    </div>
+    <div class="orbit-wrap">
+      <div class="orbit-glow"></div>
+      <div class="ring" style="width:220px;height:220px"></div>
+      <div class="ring" style="width:370px;height:370px"></div>
+      <div class="core">✦</div>
+      <div class="orbit" style="--angle:0;--radius:110;--duration:24"><span>🏆</span></div>
+      <div class="orbit" style="--angle:120;--radius:110;--duration:24"><span>🔥</span></div>
+      <div class="orbit" style="--angle:240;--radius:110;--duration:24"><span>🔔</span></div>
+      <div class="orbit reverse" style="--angle:0;--radius:185;--duration:40"><span>👥</span></div>
+      <div class="orbit reverse" style="--angle:90;--radius:185;--duration:40"><span>💳</span></div>
+      <div class="orbit reverse" style="--angle:180;--radius:185;--duration:40"><span>⚡</span></div>
+      <div class="orbit reverse" style="--angle:270;--radius:185;--duration:40"><span>◈</span></div>
+    </div>
+  </div>
+
+  <!-- COLORS -->
+  <div class="section">
+    <span class="label">colors</span>
+    <div class="grid cols-4">
+      <div class="swatch"><div class="chip" style="background:#060510"></div><div class="meta"><b>bg</b><span class="muted">#060510</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#0f0d1f"></div><div class="meta"><b>surface</b><span class="muted">#0F0D1F</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#1a1730"></div><div class="meta"><b>surface-2</b><span class="muted">#1A1730</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#8b5cf6;box-shadow:inset 0 0 48px rgba(139,92,246,.6)"></div><div class="meta"><b>accent</b><span class="muted">#8B5CF6</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#f4f2ff"></div><div class="meta"><b>text</b><span class="muted">#F4F2FF</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#8e8aa8"></div><div class="meta"><b>text-muted</b><span class="muted">#8E8AA8</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#22c55e"></div><div class="meta"><b>win</b><span class="muted">#22C55E</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#ef4444"></div><div class="meta"><b>loss</b><span class="muted">#EF4444</span></div></div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY + BUTTONS + BADGES -->
+  <div class="section grid cols-2">
+    <div>
+      <span class="label" style="display:block;margin-bottom:16px">typography · geist</span>
+      <p class="display" style="font-size:44px">display 56–72 / lowercase</p>
+      <p class="heading" style="margin-top:12px">heading 32–40 / lowercase</p>
+      <p style="margin:12px 0 0;font-size:16px">body 16 — follow the best, copy their bets, climb the leaderboard.</p>
+      <p class="muted" style="margin:8px 0 0;font-size:14px">muted 14 — captions and secondary text</p>
+      <p class="label" style="margin:12px 0 0">label 11 · uppercase · 0.08em</p>
+    </div>
+    <div>
+      <span class="label" style="display:block;margin-bottom:16px">buttons &amp; badges</span>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-primary">primary</button>
+        <button class="btn btn-ghost">ghost</button>
+        <button class="btn btn-secondary">secondary</button>
+        <button class="btn btn-primary btn-sm">small</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px">
+        <span class="badge">default</span>
+        <span class="badge badge-accent">leaderboard</span>
+        <span class="badge badge-win">win</span>
+        <span class="badge badge-loss">loss</span>
+        <span class="badge badge-outline">2.40x</span>
+      </div>
+      <div style="margin-top:20px"><input class="input" placeholder="input · 48px · 12px radius" /></div>
+    </div>
+  </div>
+
+  <!-- FEATURE CARDS -->
+  <div class="section">
+    <span class="label">feature cards</span>
+    <div class="grid cols-3">
+      <div class="card card-body feature"><span class="badge badge-accent" style="width:fit-content">leaderboard</span><p class="caption">become a legend, top the leaderboard</p><div class="frame">🏆</div></div>
+      <div class="card card-body feature"><span class="badge badge-accent" style="width:fit-content">feed</span><p class="caption">discover and follow the best bettors</p><div class="frame">👥</div></div>
+      <div class="card card-body feature"><span class="badge badge-accent" style="width:fit-content">alerts</span><p class="caption">real-time notifications for what the best are betting</p><div class="frame">🔔</div></div>
+    </div>
+  </div>
+
+  <!-- APP: FEED + BET SLIP -->
+  <div class="section">
+    <span class="label">app · feed + bet slip</span>
+    <div class="grid" style="grid-template-columns: 1fr 360px">
+      <div class="card card-body">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3 class="card-title">live feed</h3><span class="badge badge-accent">● live</span></div>
+        <div class="row"><span class="avatar">NK</span><div class="text"><b>Nova Kim</b> <span class="muted">bet</span> <b>$250</b> <span class="muted">on</span> <b>Lakers to win</b><small>Lakers vs Celtics · 2m ago</small></div><span class="badge badge-outline">2.40x</span></div>
+        <div class="row"><span class="avatar">MO</span><div class="text"><b>Max Orbit</b> <span class="muted">bet</span> <b>$1,000</b> <span class="muted">on</span> <b>yes</b><small>BTC above $100k by Friday? · 6m ago</small></div><span class="badge badge-outline">1.80x</span></div>
+        <div class="row"><span class="avatar">LF</span><div class="text"><b>Lena Flux</b> <span class="muted">bet</span> <b>$100</b> <span class="muted">on</span> <b>draw</b><small>Arsenal vs Chelsea · 14m ago</small></div><span class="badge badge-win">win</span></div>
+        <div class="row"><span class="avatar">IC</span><div class="text"><b>Ivan Comet</b> <span class="muted">bet</span> <b>$500</b> <span class="muted">on</span> <b>no</b><small>US CPI below 3%? · 31m ago</small></div><span class="badge badge-loss">loss</span></div>
+      </div>
+      <div class="card card-body" style="display:flex;flex-direction:column;gap:20px">
+        <div><h3 class="card-title">place your bet</h3><span class="muted" style="font-size:14px">Lakers vs Celtics</span></div>
+        <div style="display:flex;justify-content:space-between;border:1px solid var(--ds-color-border);background:var(--ds-color-surface-2);border-radius:12px;padding:12px 16px"><span class="muted" style="font-size:14px">Lakers to win</span><b class="accent">2.40x</b></div>
+        <div class="presets"><button class="preset">$10</button><button class="preset active">$100</button><button class="preset">$500</button><button class="preset">$1000</button></div>
+        <input class="input" value="100" />
+        <input type="range" min="1" max="1250" value="100" />
+        <div class="payout"><span class="muted" style="font-size:14px">potential payout</span><b>$240</b></div>
+        <button class="btn btn-primary btn-lg" style="width:100%">place bet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS + LEADERBOARD -->
+  <div class="section">
+    <span class="label">portfolio · stat tiles</span>
+    <div class="grid cols-3">
+      <div class="card stat"><span class="label">total pnl</span><span class="value">$48,210</span><span class="delta win">↗ 12.4%</span></div>
+      <div class="card stat"><span class="label">win rate</span><span class="value">71%</span><span class="delta win">↗ 3.1%</span></div>
+      <div class="card stat"><span class="label">open bets</span><span class="value">14</span><span class="delta loss">↘ 8.5%</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="label">leaderboard</span>
+    <div class="card" style="overflow:hidden">
+      <table>
+        <thead><tr><th class="label">#</th><th class="label">bettor</th><th class="label right">roi</th><th class="label right">win rate</th><th class="label right">pnl</th></tr></thead>
+        <tbody>
+          <tr><td class="accent"><b>1</b></td><td>Nova Kim</td><td class="right win"><b>+184.2%</b></td><td class="right muted">71%</td><td class="right win"><b>+$48,210</b></td></tr>
+          <tr><td class="accent"><b>2</b></td><td>Max Orbit</td><td class="right win"><b>+122.7%</b></td><td class="right muted">64%</td><td class="right win"><b>+$31,780</b></td></tr>
+          <tr><td class="accent"><b>3</b></td><td>Lena Flux</td><td class="right win"><b>+96.4%</b></td><td class="right muted">68%</td><td class="right win"><b>+$19,940</b></td></tr>
+          <tr><td class="muted">4</td><td>Ivan Comet</td><td class="right win"><b>+41.3%</b></td><td class="right muted">55%</td><td class="right win"><b>+$8,120</b></td></tr>
+          <tr><td class="muted">5</td><td>Aria Pulsar</td><td class="right loss"><b>-12.8%</b></td><td class="right muted">44%</td><td class="right loss"><b>-$2,140</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
